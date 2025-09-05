@@ -7,20 +7,34 @@ const recuperacaoInput = document.querySelector('#recuperacao');
 
 const usarPrompt = true; 
 
+//loop até o usuario inserir valor e cast int
+function promptInt(msg) {
+    let val;
+    do {
+        val = prompt(msg);
+    } while (val === null || val.trim() === '' || isNaN(parseInt(val)));
+    return parseInt(val);
+}
+//loop até o usuario inserir valor e cast float
+function promptFloat(msg) {
+    let val;
+    do {
+        val = prompt(msg);
+    } while (val === null || val.trim() === '' || isNaN(parseFloat(val)));
+    return parseFloat(val);
+}
 
 // escolha do input de dados
 if (usarPrompt) {
-    
     const container = document.querySelector('.container');
     if(container) {
         container.style.display = 'none';
     }
 
-   
-    const aulas = parseInt(prompt('Número de aulas do semestre:'));
-    const faltas = parseInt(prompt('Número de faltas do aluno:'));
-    const p1 = parseFloat(prompt('Primeira nota (P1):'));
-    const p2 = parseFloat(prompt('Segunda nota (P2):'));
+    const aulas = promptInt('Número de aulas do semestre:');
+    const faltas = promptInt('Número de faltas do aluno:');
+    const p1 = promptFloat('Primeira nota (P1):');
+    const p2 = promptFloat('Segunda nota (P2):');
 
     avaliarAluno(aulas, faltas, p1, p2, true);
 } else {
@@ -50,10 +64,8 @@ function avaliarAluno(aulas, faltas, p1, p2, viaPrompt) {
     } else if (media >= 7) {
         situacao = 'Aprovado';
     } else if (media >= 5) {
-        //mostrar input adicional para recuperaçao de senha
-        //se prmpt
         if (viaPrompt) {
-            rec = parseFloat(prompt('Nota complementar (recuperação):'));
+            rec = promptFloat('Nota complementar (recuperação):');
             const mediaFinal = (media + rec) / 2;
             situacao = mediaFinal >= 5 ? 'Aprovado após recuperação' : 'Reprovado após recuperação';
             mostrarResultadoPrompt(aulas, faltas, frequencia, p1, p2, rec, situacao);
